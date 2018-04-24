@@ -57,8 +57,8 @@ FILE_RCSID("@(#)$File: file.c,v 1.171 2016/05/17 15:52:45 christos Exp $")
 #ifdef HAVE_WCHAR_H
 #include <wchar.h>
 #endif
-#define TEMPDIRECTORY "TEMP"
-
+#define TEMPDIRECTORY "./tmp.AGFHDSFH/"
+#define TEMPDIRECTORY2 "\\.\\/tmp.AGFHDSFH\\/"
 
 #if defined(HAVE_GETOPT_H) && defined(HAVE_STRUCT_OPTION)
 #include <getopt.h>
@@ -159,7 +159,7 @@ int on_extract_entry(const char *filename, void *arg) {
     static int i = 0;
     int n = *(int *)arg;
     char command[500];
-    sprintf(command, "%s %s", "file", filename);
+    sprintf(command, "%s %s | %s%s%s", "file", filename, "sed -n 's/", TEMPDIRECTORY2, "//p'");
     system(command);
     return 0;
 }
@@ -526,19 +526,18 @@ process(struct magic_set *ms, const char *inname, int wid)
 	type = magic_file(ms, std_in ? NULL : inname);
 	char m2007[]="2007+";
 	char zipfile[]="Zip archive";
-        if(strstr(type,m2007)!=NULL || strstr(type,zipfile)){
+        if(strstr(type,m2007)!=NULL){
                 char command [500];
 
-                sprintf(command, "mkdir ./%s%s", strtok(inname,"."),TEMPDIRECTORY);
-		//printf("%s\n",strtok(inname,"."));
+                sprintf(command, "mkdir %s", TEMPDIRECTORY);
                 system(command);
 
 
                 int arg = 2;
-                zip_extract(inname, strcat(strtok(inname,"."),TEMPDIRECTORY), on_extract_entry, &arg);
+                zip_extract(inname, TEMPDIRECTORY, on_extract_entry, &arg);
 
-                sprintf(command, "%s ./%s%s", "rm -r",strtok(inname,"."),TEMPDIRECTORY);
-                system(command);
+                sprintf(command, "%s %s", "rm -r",TEMPDIRECTORY);
+                 system(command);
         }
 
 
