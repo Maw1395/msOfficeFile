@@ -546,7 +546,7 @@ process(struct magic_set *ms, const char *inname, int wid)
 				sprintf(command, "%s %s", "rm -r",TEMPDIRECTORY);
 				system(command);
 			}
-		}
+		}/*Forensics Tool*/
 
 		return 0;
 	}
@@ -557,7 +557,7 @@ int on_extract_entry(const char *filename, void *arg) {
 	printf("\n");
 	process(proc_arg->ms, proc_arg->argv, proc_arg->wid);
 	return 0;
-}
+} /*Forensics tool*/
 
 protected size_t
 file_mbswidth(const char *s)
