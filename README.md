@@ -1,6 +1,5 @@
-## README for file(1) Command ##
+# README for Forensics file Command 
 
-    @(#) $File: README,v 1.50  christos Exp $
  **This is a branch of the file command for linux at 2016/04/16 22:40:54 https://github.com/file/file**
  
  **This edit was conducted by Grady Denton, Michael Woodham, and Shane Bennett**
@@ -15,3 +14,9 @@
  
  The changes to the file.c command are appended with Forensics for better search availability. 
  
+# Installation Instructions
+<pre>
+sudo ./configure
+sudo make
+</pre>
+**DO NOT RUN SUDO MAKE INSTALL**
