@@ -526,20 +526,26 @@ process(struct magic_set *ms, const char *inname, int wid)
 		(void)printf("ERROR: %s%c", magic_error(ms), c);
 		return 1;
 	} else {
-			(void)printf("%s%c", type, c);
-			if(strstr(type,m2007)!=NULL || strstr(type,zip)){
-			char command [500];
-			char TEMPDIRECTORY[500];
-			strcpy(TEMPDIRECTORY, "file/XXXXXX");
-			mkdtemp(TEMPDIRECTORY);
-			struct proc_arg_t proc_arg = {
-				.ms = ms,
-				.argv = NULL,
-				.wid = wid
-			};
-			zip_extract(inname, TEMPDIRECTORY, on_extract_entry, &proc_arg);
-			sprintf(command, "%s %s", "rm -r",TEMPDIRECTORY);
-			system(command);
+		(void)printf("%s%c", type, c);
+		if(strstr(type,m2007)!=NULL || strstr(type,zip)){
+			char yorno;
+			printf("msoffice or zip file detected, would you like to examine its conecnts: (y/n) [y] default: ");
+			yorno=getchar();
+			if(yorno!='n' && yorno!="N")
+			{				
+				char command [500];
+				char TEMPDIRECTORY[500];
+				strcpy(TEMPDIRECTORY, "file/XXXXXX");
+				mkdtemp(TEMPDIRECTORY);
+				struct proc_arg_t proc_arg = {
+					.ms = ms,
+					.argv = NULL,
+					.wid = wid
+				};
+				zip_extract(inname, TEMPDIRECTORY, on_extract_entry, &proc_arg);
+				sprintf(command, "%s %s", "rm -r",TEMPDIRECTORY);
+				system(command);
+			}
 		}
 
 		return 0;
